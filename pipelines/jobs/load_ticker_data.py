@@ -36,7 +36,8 @@ def extract(spark, ticker):
         StructField('Volume', IntegerType(), True)
     ])
 
-    df = spark.read.csv(f'../data/{ticker}.csv', header=True, schema=price_schema)
+    # reads csv data from parent data folder
+    df = spark.read.csv(f'../../data/{ticker}.csv', header=True, schema=price_schema)
     df = df.withColumn('ticker', F.lit(ticker))
     return df
 
@@ -114,6 +115,6 @@ def read_parquet(file_name):
 
 
 if __name__ == '__main__':
-    pipeline()
-    # read_parquet('../data/etl.parquet')
+    # pipeline()
+    read_parquet('../../data/etl.parquet')
 
