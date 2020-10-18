@@ -1,10 +1,19 @@
 from pyspark.sql.types import StructType, StructField, FloatType, IntegerType, DateType, StringType
 import pyspark.sql.functions as F
 from pyspark.sql.window import Window
-from data_strategy_tools.dependencies.spark import spark_session
+from pipelines.dependencies.spark import spark_session
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+
+
+def rename_columns(df, columns):
+    if isinstance(columns, dict):
+        for old_name, new_name in columns.items():
+            df = df.withColumnRenamed(old_name, new_name)
+        return df
+    else:
+        raise ValueError("'columns' should be a dict, like {'old_name_1':'new_name_1', 'old_name_2':'new_name_2'}")
 
 
 def extract(spark, ticker):
@@ -15,16 +24,19 @@ def extract(spark, ticker):
     :return: Spark DataFrame
     """
     logging.info(f'extracting data for {ticker}')
+
+    # set pricing schema for data import
     price_schema = StructType([
-        StructField('date', DateType(), True),
-        StructField('open', FloatType(), True),
-        StructField('high', FloatType(), True),
-        StructField('low', FloatType(), True),
-        StructField('close', FloatType(), True),
-        StructField('adj_close', FloatType(), True),
-        StructField('volume', IntegerType(), True)
+        StructField('Date', DateType(), True),
+        StructField('Open', FloatType(), True),
+        StructField('High', FloatType(), True),
+        StructField('Low', FloatType(), True),
+        StructField('Close', FloatType(), True),
+        StructField('Adj Close', FloatType(), True),
+        StructField('Volume', IntegerType(), True)
     ])
-    df = spark.read.csv(f'data/{ticker}.csv', header=True, schema=price_schema)
+
+    df = spark.read.csv(f'../data/{ticker}.csv', header=True, schema=price_schema)
     df = df.withColumn('ticker', F.lit(ticker))
     return df
 
@@ -37,6 +49,11 @@ def transform(df, ticker):
     :return: Spark Dataframe
     """
     logging.info(f'transforming data for {ticker}')
+
+    # rename columns
+    df = rename_columns(df, {'Adj Close': 'adj_close', 'Date': 'date', 'Volume': 'volume'})
+
+    # add some analytics
     win = Window.partitionBy("ticker").orderBy("date")
     df = df.withColumn('net_chg_1d', (df.adj_close - F.lag(df.adj_close).over(win)))
     df = df.withColumn('net_chg_5d', (df.adj_close - F.lag(df.adj_close, 5).over(win)))
@@ -44,9 +61,14 @@ def transform(df, ticker):
     df = df.withColumn('pct_chg_1d', (df.net_chg_1d / F.lag(df.adj_close).over(win)))
     df = df.withColumn('pct_chg_5d', (df.net_chg_5d / F.lag(df.adj_close, 5).over(win)))
     df = df.withColumn('pct_chg_30d', (df.net_chg_30d / F.lag(df.adj_close, 30).over(win)))
-    df = df.withColumn('high_low_range', (df.high - df.low))
+    df = df.withColumn('high_low_range', (df.High - df.Low))
     df = df.withColumn('high_low_range_pct', (df.high_low_range / df.adj_close))
     df = df.withColumn('est_turnover', (df.adj_close * df.volume))
+
+    # drop some columns
+    drop_cols = ['Open', 'High', 'Low', 'Close']
+    df.drop(*drop_cols)
+
     return df
 
 
@@ -69,7 +91,7 @@ def pipeline():
     """
     logging.info('pipeline commencing')
     tickers = 'AAPL,AMZN,FB,IBM,MSFT'.split(',')
-    parquet_file_path = 'data/etl.parquet'
+    parquet_file_path = '../data/etl.parquet'
     spark = spark_session()
 
     for ticker in tickers:
@@ -93,5 +115,5 @@ def read_parquet(file_name):
 
 if __name__ == '__main__':
     pipeline()
-    # read_parquet('data/etl.parquet')
+    # read_parquet('../data/etl.parquet')
 
