@@ -115,6 +115,6 @@ def read_parquet(file_name):
 
 
 if __name__ == '__main__':
-    # pipeline()
-    read_parquet('../../data/etl.parquet')
+    pipeline()
+    # read_parquet('../../data/etl.parquet')
 
