@@ -91,7 +91,7 @@ def pipeline():
     """
     logging.info('pipeline commencing')
     tickers = 'AAPL,AMZN,FB,IBM,MSFT'.split(',')
-    parquet_file_path = '../data/etl.parquet'
+    parquet_file_path = '../../data/etl.parquet'
     spark = spark_session()
 
     for ticker in tickers:
