@@ -52,7 +52,16 @@ def transform(df, ticker):
     logging.info(f'transforming data for {ticker}')
 
     # rename columns
-    df = rename_columns(df, {'Adj Close': 'adj_close', 'Date': 'date', 'Volume': 'volume'})
+    column_dict = {
+        'Adj Close': 'adj_close',
+        'Date': 'date',
+        'Open': 'open',
+        'High': 'high',
+        'Low': 'low',
+        'Close': 'close',
+        'Volume': 'volume'
+    }
+    df = rename_columns(df, column_dict)
 
     # add some analytics
     win = Window.partitionBy("ticker").orderBy("date")
@@ -115,6 +124,6 @@ def read_parquet(file_name):
 
 
 if __name__ == '__main__':
-    # pipeline()
-    read_parquet('../../data/etl.parquet')
+    pipeline()
+    # read_parquet('../../data/etl.parquet')
 
