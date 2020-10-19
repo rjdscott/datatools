@@ -3,6 +3,7 @@ What will be covered:
 1. ETL Pipelines using PySpark and Parquet files
 2. API using ProtoBuf and Flask
 3. Plotly Dash + API and Docker
+4. Airflow + Docker
 
 ## ETL Pipelines using PySpark
 Project path: `datatools/api`
@@ -82,3 +83,16 @@ docker-compose up -d --force-recreate
 Then navigate to [http://localhost:8050](http://localhost:8050) to see the dashboard.
 
 <img src="https://chessmate-public.s3.amazonaws.com/dashboard.png" width="706" height="744">
+
+## Airflow + Docker
+A minimalist implementation of airflow with docker. 
+
+To use:
+- create your own DAG in the `airflow/dags` 
+- run `docker-compose up -d` you can add `--build` arg to build all images
+- view the dashboard available at http://localhost:8080
+
+<img src="https://chessmate-public.s3.amazonaws.com/airflow.png">
+
+
+For more information, please see the project README.md
