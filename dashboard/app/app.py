@@ -10,10 +10,22 @@ import pandas as pd
 
 
 def get_ticker_data(ticker):
+    """
+    This is the protobuf handler in its simplest form.
+    It makes a standard request to the datatools-api service and deserializes
+    the message and converts to pandas dataframe
+    :param ticker: string ticker
+    :return: pandas DataFrame
+    """
+    # make call to api service
     url = f'http://datatools-api/{ticker}'
     req = requests.get(url)
+
+    # deserialize bytes to protobuf message format
     price_message = ap.byte_to_message(req.content)
     price_dict = ap.message_to_dict(price_message)
+
+    # further transform to dataframe for dashboard plotting
     price_df = pd.DataFrame(price_dict.get('price'))
     price_df['pct_chg_1d'] = price_df.close_adj.pct_change(periods=1)
     price_df['ticker'] = ticker
