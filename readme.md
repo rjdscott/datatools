@@ -69,3 +69,15 @@ a daily returns distribution plot.
 
 The dashboard is used in tandem with the `datatools/api` so in order to facilitate smooth simulation
 both the dashboard and api have been dockerized and orchestrated using docker-compose.
+
+To run the dashboard and API:
+
+```
+git clone https://github.com/rjdscott/datatools.git
+cd datatools/dashboard
+docker-compose build
+docker-compose up -d --force-recreate
+```
+
+Then navigate to [http://localhost:8050](http://localhost:8050) to see the dashboard.
+<img src="data/img/dashboard.png">
