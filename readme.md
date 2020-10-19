@@ -65,5 +65,8 @@ so it is not as memory heavy as pandas.
 2. Add some more useful meaningful services 
 
 ## Dashboard using plotly Dash
+A very minimalist dashboard has been built using plotly Dash, which displays a stock return series and
+a daily returns distribution plot.
 
-### Deployment using Docker
+The dashboard is used in tandem with the `datatools/api` so in order to facilitate smooth simulation
+both the dashboard and api have been dockerized and orchestrated using docker-compose.
