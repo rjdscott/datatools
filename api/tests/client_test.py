@@ -1,5 +1,5 @@
 import requests
-from api.resources import asset_prices as ap
+from resources import asset_prices as ap
 import pandas as pd
 
 

@@ -2,8 +2,7 @@
 What will be covered:
 1. ETL Pipelines using PySpark and Parquet files
 2. API using ProtoBuf and Flask
-3. Dashboard using plotly Dash
-4. Deployment using Docker
+3. Plotly Dash + API and Docker
 
 ## ETL Pipelines using PySpark
 Project path: `datatools/api`
@@ -64,6 +63,9 @@ so it is not as memory heavy as pandas.
 1. Upgrade the API to be a fully implemented RPC framework (maybe create a second project to run comparisons)
 2. Add some more useful meaningful services 
 
-## Dashboard using plotly Dash
+## <a name="DashDocker"></a> Plotly Dash + API and Docker 
+A very minimalist dashboard has been built using plotly Dash, which displays a stock return series and
+a daily returns distribution plot.
 
-### Deployment using Docker
+The dashboard is used in tandem with the `datatools/api` so in order to facilitate smooth simulation
+both the dashboard and api have been dockerized and orchestrated using docker-compose.

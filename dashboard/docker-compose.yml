@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+
+  datatools-dashboard:
+    build: ./
+    container_name: datatools-dashboard
+    ports:
+      - 8050:80 # host:container
+    depends_on:
+      - datatools-api
+
+  datatools-api:
+    build: ../api
+    container_name: datatools-api
+    ports:
+      - 5000:80 # host:container

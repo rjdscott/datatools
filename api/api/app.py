@@ -1,7 +1,6 @@
 from flask import Flask, send_file
 from flask_restful import Resource, Api
-from api.resources import asset_prices as ap
-# from api.resources import asset_prices as ap
+from resources import asset_prices as ap
 
 import io
 
@@ -22,4 +21,4 @@ class AssetPrices(Resource):
 api.add_resource(AssetPrices, '/<string:ticker>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=80)
