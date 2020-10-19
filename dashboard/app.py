@@ -11,8 +11,8 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.H1(children='DataTools Dashboard'),
-    html.Div([
+    html.H2(children='DataTools Dashboard'),
+    html.Div(["Select Ticker: ",
         dcc.Dropdown(
             id='input-1-state',
             options=[
@@ -24,21 +24,20 @@ app.layout = html.Div([
             ],
             value='AAPL',
             style=dict(
-                width='150px',
+                width='120px',
                 display='inline-block',
-                verticalAlign="middle")
-        )]
-    ),
-    html.Div([
+                verticalAlign="middle"
+            )
+        ),
         html.Button(
             id='submit-button-state',
             n_clicks=0,
             style=dict(
-                width='150px',
+                width='100px',
                 display='inline-block',
                 verticalAlign="middle"),
-            children='Submit')
-    ]),
+            children='Run')]
+    ),
     html.Div(id='output-state')
 ])
 
