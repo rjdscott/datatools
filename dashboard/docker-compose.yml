@@ -1,6 +1,7 @@
 version: '3.4'
 
 services:
+
   datatools-dashboard:
     build: ./
     container_name: datatools-dashboard
@@ -8,7 +9,6 @@ services:
       - 8050:80 # host:container
     depends_on:
       - datatools-api
-
 
   datatools-api:
     build: ../api
