@@ -81,4 +81,4 @@ docker-compose up -d --force-recreate
 
 Then navigate to [http://localhost:8050](http://localhost:8050) to see the dashboard.
 
-<img src="https://chessmate-public.s3.amazonaws.com/dashboard.png">
+<img src="https://chessmate-public.s3.amazonaws.com/dashboard.png" width="706" height="744">
