@@ -10,7 +10,7 @@ import pandas as pd
 
 
 def get_ticker_data(ticker):
-    url = f'http://0.0.0.0:5000/{ticker}'
+    url = f'http://datatools-api/{ticker}'
     req = requests.get(url)
     price_message = ap.byte_to_message(req.content)
     price_dict = ap.message_to_dict(price_message)
@@ -77,7 +77,7 @@ def update_output(n_clicks, input1):
 
     # construct figures for dash output
     fig_line = px.line(df, x="date", y="close_adj", title=f'{input1} Stock History')
-    fig_hist = px.histogram(df, x="pct_chg_1d", nbins=300, marginal="box", title=f'{input1}Returns Distribution')
+    fig_hist = px.histogram(df, x="pct_chg_1d", nbins=300, marginal="box", title=f'{input1} Returns Distribution')
 
     # construct output object
     output = html.Div([
@@ -89,4 +89,4 @@ def update_output(n_clicks, input1):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host='0.0.0.0', port=8050)
+    app.run_server(debug=True, host='0.0.0.0', port=80)
