@@ -1,15 +1,19 @@
 # DataTools Dashboard
 
-## Getting started
-1. Activate your environment
-2. install packages `pip install -r requirements.txt`
-3. run dash server in developer mode `python app/app.py`
+This project aims to serve as a minimalist implementation of a plotly dash dashboard that leverages
+the `datatools/api` service.
 
-To run from docker
+### How to get started
+Since the dashboard is dependent on the api service, the dashboard and api have been containerized and can be
+launched together using docker-compose.
+
+First, make sure docker is running. Then build the images
 ```
-docker build -t datatools_dash:v0_1 .
-docker run -p 8050:8050 datatools_dash:v0_1 
+cd datatools/dashboard
+docker-compose build
 ```
-## ToDo
-1. change dataframe reading from `datatools/data` directory and call api in `datatools/api`
-2. add gunicorn production server
+Then, once built
+```
+docker-compose up
+```
+And make your way to `http://localhost:8050` to view the dashboard.
