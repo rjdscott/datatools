@@ -1,4 +1,4 @@
-import api.protos.asset_prices_pb2 as ap
+import protos.asset_prices_pb2 as ap
 import pandas as pd
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.json_format import MessageToDict
@@ -79,7 +79,7 @@ def byte_to_message(bytes_raw):
 
 
 def get_asset_prices(ticker, parquet_path, data_format=None):
-    df = get_ticker_data_dask(ticker=ticker, file_path=parquet_path)
+    df = get_ticker_data_pandas(ticker=ticker, file_path=parquet_path)
     asset_message = asset_price_message_from_df(ticker, df)
     if data_format == 'bytes':
         return message_to_bytes(asset_message)

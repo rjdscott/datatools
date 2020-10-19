@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package protoblog;
+
+message Asset {
+    string symbol = 1;
+
+    message AssetPrice {
+        string date = 1;
+        float open = 2;
+        float high = 3;
+        float low = 4;
+        float close = 5;
+        float close_adj = 6;
+        int64 volume = 7;
+    }
+
+    repeated AssetPrice price = 3;
+}
