@@ -1,4 +1,4 @@
-import api.api.protos.asset_prices_pb2 as ap
+import protos.asset_prices_pb2 as ap
 import pandas as pd
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.json_format import MessageToDict
