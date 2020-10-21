@@ -6,3 +6,4 @@ pyspark-stubs==3.0.0.post1
 python-dateutil==2.8.1
 pytz==2020.1
 six==1.15.0
+dask==2.30.0
