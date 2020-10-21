@@ -1,4 +1,4 @@
-from dask import delayed
+import dask
 import dask.dataframe as dd
 import logging
 
@@ -57,7 +57,7 @@ def load(df, file_path, ticker):
     df.to_parquet(file_path, engine='pyarrow', write_index=False, append=True)
 
 
-def pipeline(ticker, parquet_file_path):
+def pipeline_sync(ticker, parquet_file_path):
     """
     The pipeline controller
     :return: None
@@ -67,12 +67,27 @@ def pipeline(ticker, parquet_file_path):
     load(transform_df, parquet_file_path, ticker=ticker)
 
 
-def pipeline_manager(parquet_file):
-    logging.info('pipeline commencing...')
+def pipeline_async(ticker, parquet_file_path):
+    """
+    The pipeline controller
+    :return: None
+    """
+    ticker_df = dask.delayed(extract)(ticker=ticker)
+    transform_df = dask.delayed(transform)(ticker_df, ticker=ticker)
+    dask.delayed(load)(transform_df, parquet_file_path, ticker=ticker)
+
+
+def pipeline_manager(parquet_file, parallel=True):
     tickers = 'AAPL,AMZN,FB,IBM,MSFT'.split(',')
 
+    if parallel:
+        logging.info('pipeline commencing in parallel...')
+        for ticker in tickers:
+            pipeline_async(ticker, parquet_file)
+
     for ticker in tickers:
-        pipeline(ticker, parquet_file)
+        logging.info('pipeline commencing in parallel...')
+        pipeline_sync(ticker, parquet_file)
 
 
 def read_parquet(file_name):
@@ -87,6 +102,9 @@ def read_parquet(file_name):
 
 if __name__ == '__main__':
     parquet_file = '../../data/etl_dask.parquet'
-
-    # pipeline_manager(parquet_file)
-    read_parquet(parquet_file)
+    parallel = True
+    if parallel:
+        dask.compute(pipeline_manager(parquet_file, parallel))
+    else:
+        pipeline_manager(parquet_file, parallel)
+    # read_parquet(parquet_file)
