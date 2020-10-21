@@ -73,7 +73,7 @@ def pipeline(tickers, parquet_file_path, in_parallel=True):
             dask.delayed(load)(transform_df, parquet_file_path, ticker=ticker)
 
         else:
-            logging.info('pipeline commencing in parallel...')
+            logging.info('pipeline commencing in serial...')
             ticker_df = extract(ticker=ticker)
             transform_df = transform(ticker_df, ticker=ticker)
             load(transform_df, parquet_file_path, ticker=ticker)
