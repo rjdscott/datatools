@@ -57,37 +57,41 @@ def load(df, file_path, ticker):
     df.to_parquet(file_path, engine='pyarrow', write_index=False, append=True)
 
 
-def pipeline_sync(ticker, parquet_file_path):
+def pipeline(tickers, parquet_file_path, in_parallel=True):
     """
-    The pipeline controller
+    Pipeline orchestrator function
+    :param tickers: list()
+    :param parquet_file_path: string
+    :param in_parallel: bool
     :return: None
     """
-    ticker_df = extract(ticker=ticker)
-    transform_df = transform(ticker_df, ticker=ticker)
-    load(transform_df, parquet_file_path, ticker=ticker)
+    for ticker in tickers:
+        if in_parallel:
+            logging.info('pipeline commencing in parallel...')
+            ticker_df = dask.delayed(extract)(ticker=ticker)
+            transform_df = dask.delayed(transform)(ticker_df, ticker=ticker)
+            dask.delayed(load)(transform_df, parquet_file_path, ticker=ticker)
+
+        else:
+            logging.info('pipeline commencing in parallel...')
+            ticker_df = extract(ticker=ticker)
+            transform_df = transform(ticker_df, ticker=ticker)
+            load(transform_df, parquet_file_path, ticker=ticker)
 
 
-def pipeline_async(ticker, parquet_file_path):
+def pipeline_manager(parquet_file, in_parallel=True):
     """
-    The pipeline controller
+    Pipeline manager function
+    :param parquet_file: str
+    :param in_parallel: bool
     :return: None
     """
-    ticker_df = dask.delayed(extract)(ticker=ticker)
-    transform_df = dask.delayed(transform)(ticker_df, ticker=ticker)
-    dask.delayed(load)(transform_df, parquet_file_path, ticker=ticker)
-
-
-def pipeline_manager(parquet_file, parallel=True):
     tickers = 'AAPL,AMZN,FB,IBM,MSFT'.split(',')
 
-    if parallel:
-        logging.info('pipeline commencing in parallel...')
-        for ticker in tickers:
-            pipeline_async(ticker, parquet_file)
-
-    for ticker in tickers:
-        logging.info('pipeline commencing in parallel...')
-        pipeline_sync(ticker, parquet_file)
+    if in_parallel:
+        dask.compute(pipeline(tickers=tickers, parquet_file_path=parquet_file, in_parallel=in_parallel))
+    else:
+        pipeline(tickers=tickers, parquet_file_path=parquet_file, in_parallel=in_parallel)
 
 
 def read_parquet(file_name):
@@ -102,9 +106,5 @@ def read_parquet(file_name):
 
 if __name__ == '__main__':
     parquet_file = '../../data/etl_dask.parquet'
-    parallel = True
-    if parallel:
-        dask.compute(pipeline_manager(parquet_file, parallel))
-    else:
-        pipeline_manager(parquet_file, parallel)
-    # read_parquet(parquet_file)
+    # pipeline_manager(parquet_file)
+    read_parquet(parquet_file)
