@@ -131,3 +131,4 @@ dmypy.json
 
 ## ipython notebooks
 .ipynb_checkpoints
+/dask-worker-space
