@@ -11,7 +11,7 @@ services:
       - datatools-api
 
   datatools-api:
-    build: ../api
+    build: ../api_flask
     container_name: datatools-api
     ports:
       - 5000:80 # host:container
