@@ -6,12 +6,12 @@ from pydantic import BaseModel
 class PriceBase(BaseModel):
     ticker: str
     date: str
-    open: float
-    high: float
-    low: float
-    close: float
-    adj_close: float
-    volume: int
+    open: str
+    high: str
+    low: str
+    close: str
+    close_adj: str
+    volume: str
 
 
 class PriceCreate(PriceBase):
@@ -20,14 +20,6 @@ class PriceCreate(PriceBase):
 
 class Price(PriceBase):
     id: int
-    ticker: str
-    date: str
-    open: float
-    high: float
-    low: float
-    close: float
-    adj_close: float
-    volume: int
 
     class Config:
         orm_mode = True
