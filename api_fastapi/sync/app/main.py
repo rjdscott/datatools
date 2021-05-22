@@ -20,7 +20,7 @@ def get_db():
         db.close()
 
 
-@app.get("/tickers/", response_model=List[schemas.Ticker])
+@app.get("/tickers/", response_model=List[schemas.Tickers])
 def read_tickers(db: Session = Depends(get_db)):
     tickers = crud.get_tickers(db)
     return tickers

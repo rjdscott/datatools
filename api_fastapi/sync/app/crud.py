@@ -4,7 +4,8 @@ from . import models, schemas
 
 
 def get_tickers(db: Session):
-    return db.query(models.Price).distinct(models.Price.ticker).all()
+    data = db.query(models.Price.ticker).distinct(models.Price.ticker).all()
+    return [{"ticker": x[0]} for x in data]
 
 
 def get_ticker_prices(db: Session, ticker: str, limit: int = 2000, offset: int = 0):

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from pydantic import BaseModel
 
@@ -25,9 +25,6 @@ class Price(PriceBase):
         orm_mode = True
 
 
-class TickerBase(BaseModel):
-    tickers: str
-
-
-class Ticker(TickerBase):
+class Tickers(BaseModel):
+    ticker: str
     pass
