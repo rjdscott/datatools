@@ -7,7 +7,7 @@ class Price(Base):
     __tablename__ = "prices"
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(String, nullable=False)
+    date = Column(Date, nullable=False)
     ticker = Column(String, nullable=False)
     open = Column(String)
     high = Column(String)

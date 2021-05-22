@@ -1,11 +1,11 @@
 from typing import List, Optional, Dict
-
+from datetime import date
 from pydantic import BaseModel
 
 
 class PriceBase(BaseModel):
     ticker: str
-    date: str
+    date: date
     open: str
     high: str
     low: str
