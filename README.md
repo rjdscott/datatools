@@ -22,7 +22,7 @@ This project contains the following:
 4. how to create data schemas to enforce type hints at runtime using [pydantic](https://pydantic-docs.helpmanual.io/)
 
 #### The data
-Using a simple ETL script `datatools/api_fastapi/sync/create_db_data.py` 
+Using a simple ETL script `datatools/api_fastapi/load_db.py` 
 extracted all ticker data from the parquet files in `data/all-tickers` 
 and stored it in a single `prices` table in `api_fastapi/sync/app.db`.
 

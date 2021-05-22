@@ -19,7 +19,6 @@ class PriceCreate(PriceBase):
 
 
 class Price(PriceBase):
-    id: int
 
     class Config:
         orm_mode = True

@@ -8,7 +8,7 @@ def get_tickers(db: Session):
     return [{"ticker": x[0]} for x in data]
 
 
-def get_ticker_prices(db: Session, ticker: str, start_date: date, end_date: date, limit: int = 1000, offset: int = 0):
+def get_ticker_prices(db: Session, ticker: str, start_date: date, end_date: date, limit: int = 1000):
     return db.query(models.Price)\
             .filter(models.Price.ticker == ticker)\
             .filter(models.Price.date >= start_date)\
