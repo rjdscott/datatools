@@ -1,11 +1,76 @@
 # DataTools
 #### Contents:
-1. [API using ProtoBuf and Flask](#api-using-protobuf-and-flask)
-2. [Plotly Dash + API and Docker](#plotly-dash--api-and-docker)
-3. [ETL Pipelines](#etl-pipelines)
-4. [Airflow + Docker](#airflow--docker)
+1. [API using FastAPI + SQLAlchemy + pydantic](#api-using-fastapi--sqlalchemy--pydantic)
+2. [API using Flask + Protobuf](#api-using-flask--protobuf)
+3. [Plotly Dash + API and Docker](#plotly-dash--api-and-docker)
+4. [ETL Pipelines](#etl-pipelines)
+5. [Airflow + Docker](#airflow--docker)
 
-## API using ProtoBuf and Flask
+## API using FastAPI + SQLAlchemy + pydantic
+This project is a minimalistic implementation of a FastAPI HTTP REST service that only returns serialized stock 
+time-series data stored in a sqlite database. We will be using SQLAlchemy as the ORM and pydantic for serialization 
+and validation for our endpoints.
+
+Project path: `datatools/api_fastapi`
+
+Further information: [datatools/api_fastapi/README.md](https://github.com/rjdscott/datatools/blob/master/api_fastapi/README.md)
+
+This project contains the following:
+1. a basic synchronous HTTP server using [FastAPI](https://fastapi.tiangolo.com/), a modern, high-performance web framework for building APIs
+2. use FastAPI's swagger documentation to access the app's endpoints.
+3. how to use [SQLAlchemy](https://docs.sqlalchemy.org/en/14/) to model and query the data stored in a local [SQLite](https://www.sqlite.org/index.html)
+4. how to create data schemas to enforce type hints at runtime using [pydantic](https://pydantic-docs.helpmanual.io/)
+
+#### The data
+Using a simple ETL script `datatools/api_fastapi/sync/create_db_data.py` 
+extracted all ticker data from the parquet files in `data/all-tickers` 
+and stored it in a single `prices` table in `api_fastapi/sync/app.db`.
+
+#### How to run
+```bash
+(venv) ➜ cd datatools/api_fastapi/sync
+(venv) ➜ uvicorn app.main:app --reload
+
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [29317] using statreload
+INFO:     Started server process [29319]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+```
+
+You can use the command line to test the tickers endpoint
+```bash
+curl -X 'GET' 'http://localhost:8000/tickers/' -H 'accept: application/json'
+
+[
+  {
+    "ticker": "AAPL"
+  },
+  {
+    "ticker": "AMZN"
+  },
+  {
+    "ticker": "FB"
+  },
+  {
+    "ticker": "IBM"
+  },
+  {
+    "ticker": "MSFT"
+  }
+]
+```
+
+Or you can navigate to the api documentation page at http://127.0.0.1:8000/docs and execute the same query
+
+<img src="https://github.com/rjdscott/datatools/blob/master/data/img/api_fastapi.png?raw=true">
+
+#### ToDo's
+1. implement an async api - which is what really makes FastAPI's performance comparative to node, etc.
+2. customize the swagger documentation to use less generic text and placeholders
+3. dockerize the application
+
+## API using Flask + Protobuf
 This project is a minimalistic implementation of a flask HTTP REST service that only returns serialized stock 
 time-series data originally stored in a local parquet file. Protobuf is only used for the serialization/deserialization
 of messages over HTTP. 
@@ -15,9 +80,9 @@ Project path: `datatools/api`
 Further information: [datatools/api/README.md](https://github.com/rjdscott/datatools/blob/master/airflow/README.md)
 
 This project contains the following:
-1. a basic HTTP server using Flask
-2. an implementation of Protobuf to serialize and send structured data over HTTP 
-3. how to use Dask to read/manipulate data from a local parquet file and serialize using protobuf
+1. a basic HTTP server using [Flask Restful](https://flask-restful.readthedocs.io/en/latest/quickstart.html)
+2. an implementation of [Protobuf](https://developers.google.com/protocol-buffers/docs/pythontutorial) to serialize and send structured data over HTTP 
+3. how to use [Dask](https://dask.org/) on the backend to read/manipulate data from a local parquet file and serialize using protobuf
 
 #### The data
 The data served is stored in a parquet in the `datatools/api/data` directory which 
@@ -67,7 +132,7 @@ docker-compose up -d --force-recreate
 
 Then navigate to [http://localhost:8050](http://localhost:8050) to see the dashboard.
 
-<img src="https://chessmate-public.s3.amazonaws.com/dashboard.png" width="706" height="744">
+<img src="https://github.com/rjdscott/datatools/blob/master/data/img/dashboard.png?raw=true" width="706" height="744">
 
 ## ETL Pipelines
 Project path: `datatools/pipelines`
