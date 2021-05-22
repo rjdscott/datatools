@@ -23,12 +23,13 @@ Resources:
 First you need to clone this repository and install the required packages
 ```bash
 (venv) ➜ git clone https://github.com/rjdscott/datatools.git
-(venv) ➜ cd datatools/api_fastapi/sync
+(venv) ➜ cd datatools/api_fastapi/
 (venv) ➜ pip install -r requirements.txt
 ```
 
 To run the app with reloads:
 ```bash
+(venv) ➜ cd sync/
 (venv) ➜ uvicorn app.main:app --reload
 
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
