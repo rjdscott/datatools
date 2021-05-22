@@ -124,10 +124,10 @@ both the dashboard and api have been dockerized and orchestrated using docker-co
 To run the dashboard and API:
 
 ```
-git clone https://github.com/rjdscott/datatools.git
-cd datatools/dashboard
-docker-compose build
-docker-compose up -d --force-recreate
+(venv) ➜ git clone https://github.com/rjdscott/datatools.git
+(venv) ➜ cd datatools/dashboard
+(venv) ➜ docker-compose build
+(venv) ➜ docker-compose up -d --force-recreate
 ```
 
 Then navigate to [http://localhost:8050](http://localhost:8050) to see the dashboard.
