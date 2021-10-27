@@ -3,7 +3,7 @@ beautifulsoup4==4.9.3
 bokeh==2.2.2
 click==7.1.2
 cloudpickle==1.6.0
-dask==2.30.0
+dask==2021.10.0
 distributed==2.30.0
 Flask==1.1.2
 Flask-RESTful==0.3.8
