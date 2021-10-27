@@ -9,7 +9,7 @@ dash-core-components==1.12.1
 dash-html-components==1.1.1
 dash-renderer==1.8.2
 dash-table==4.10.1
-dask==2.30.0
+dask==2021.10.0
 distributed==2.30.0
 Flask==1.1.2
 Flask-Compress==1.7.0
