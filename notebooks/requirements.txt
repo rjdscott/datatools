@@ -16,7 +16,7 @@ dask==2.30.0
 dask-labextension==3.0.0
 decorator==4.4.2
 defusedxml==0.6.0
-distributed==2.30.0
+distributed==2021.10.0
 entrypoints==0.3
 graphviz==0.14.2
 HeapDict==1.0.1
