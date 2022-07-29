@@ -36,7 +36,7 @@ jupyterlab==2.2.8
 jupyterlab-pygments==0.1.2
 jupyterlab-server==1.2.0
 MarkupSafe==1.1.1
-mistune==0.8.4
+mistune==2.0.3
 msgpack==1.0.0
 multidict==4.7.6
 nbclient==0.5.1
